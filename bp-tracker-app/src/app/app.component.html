@@ -7,5 +7,20 @@
   <div class="form-group">
     <label for="systolic">Systolic (Top Number)</label>
     <input id="systolic" type="number" [(ngModel)]="systolic" />
+    <label for="diastolic">Diastolic (Middle Number)</label>
+    <input id="diastolic" type="number" [(ngModel)]="diastolic"/>
+    <label for="pulse">Pulse (Heart Rate)</label>
+    <input id="pulse" type="number" [(ngModel)]="pulse"/>
+    <button (click)="checkBloodPressure()">Check Reading</button>
+    <p *ngIf="status" [ngClass]="getStatusClass()">
+      Status: {{ status }}
+    </p>
+
+    <h2>History</h2>
+    <ul>
+      <li *ngFor="let reading of readings">
+        {{ reading.systolic }}/{{ reading.diastolic }} ({{ reading.pulse }}) - {{ reading.status}}
+      </li>
+    </ul>
   </div>
 </main>

@@ -30,3 +30,32 @@ input {
   border: 1px solid #ccc;
   border-radius: 6px;
 }
+button {
+  margin-top: 20px;
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.normal {
+  color: green;
+  font-weight: bold;
+}
+
+.elevated {
+  color: orange;
+  font-weight: bold;
+}
+
+.high {
+  color: red;
+  font-weight: bold;
+}
