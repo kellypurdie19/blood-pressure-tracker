@@ -1,8 +1,31 @@
-.app-container {
-  max-width: 700px;
-  margin: 40px auto;
-  padding: 24px;
-  font-family: Arial, sans-serif;
+.page {
+  background-color: #f5f5f7; // soft Apple grey
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center; // 👈 horizontal center
+  align-items: flex-start; // 👈 top align (not vertical)
+  padding: 40px 20px;
+}
+
+.card {
+  max-width:640px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2em;
+  background: #ffffff;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.05),
+    0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.card:hover {
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
@@ -30,19 +53,29 @@ input {
   border: 1px solid #ccc;
   border-radius: 6px;
 }
+
 button {
-  margin-top: 20px;
-  padding: 12px;
-  font-size: 1rem;
-  border: none;
+  margin-top: 10px;
+  margin-right: 10px;
+  padding: 8px 12px;
   border-radius: 6px;
+  border: none;
+  cursor: pointer;
   background-color: #007bff;
   color: white;
-  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 button:hover {
   background-color: #0056b3;
+}
+
+.clear-form-btn {
+    background-color: #bec5d0;
+    color: #222;
+}
+.clear-form-btn:hover {
+    background-color: #d1d1d1;
 }
 
 .normal {
@@ -58,4 +91,67 @@ button:hover {
 .high {
   color: red;
   font-weight: bold;
+}
+.clear-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.clear-btn:hover {
+  background-color: #5a6268;
+}
+.summary-card {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  padding: 20px;
+
+  background: #f7f7f7;
+  border-radius: 16px;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  margin-left: 10px;
+}
+
+.delete-btn:hover {
+  background-color: #a71d2a;
+}
+.history-header,
+.history-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1.5fr 120px;
+  align-items: center;
+  gap: 16px;
+}
+.history-header {
+  font-weight: bold;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #ccc;
+}
+.history-row {
+  padding: 14px 0;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.2s ease;
+}
+.history-row:hover {
+  background-color: #f5f5f5;
+}
+.history-list {
+    margin-top: 20px;
+}
+.bp {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+.pulse {
+    color: #555;
+} 
+.status {
+    font-weight: bold;
+}
+.date {
+  color: #5a595e;
+  font-size: 0.9rem;
 }

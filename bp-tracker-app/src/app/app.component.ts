@@ -13,6 +13,13 @@ export class AppComponent {
   diastolic: number = 0;
   pulse: number = 0;
 
+  clearForm() {
+    this.systolic = 0;
+    this.diastolic = 0;
+    this.pulse = 0;
+    this.status = '';
+  }
+
   status: string = '';
   checkBloodPressure() {
     if (this.systolic < 120 && this.diastolic < 80) {
@@ -24,7 +31,7 @@ export class AppComponent {
     }
 
      // 👉 Save the reading
-    this.readings.push({
+    this.readings.unshift({
       systolic: this.systolic,
       diastolic: this.diastolic,
       pulse: this.pulse,
@@ -45,8 +52,35 @@ export class AppComponent {
       const saved = localStorage.getItem('bpReadings');
 
       if (saved) {
-        this.readings = JSON.parse(saved);
+        this.readings = JSON.parse(saved).map((r: any) =>({
+          ...r,
+          date: new Date(r.date)
+        }));
       }
+    }
+    clearHistory(){
+      this.readings = [];
+      localStorage.removeItem('bpReadings');
+    }
+    deleteReading(index: number){
+      this.readings.splice(index, 1);
+      localStorage.setItem('bpReadings', JSON.stringify(this.readings));
+    }
+    getAverageSystolic(){
+      if(this.readings.length === 0) return 0;
+      const total = this.readings.reduce((sum, reading) =>{
+        return sum + reading.systolic;
+      }, 0);
+
+      return Math.round(total / this.readings.length);
+    }
+    getAverageDiastolic(){
+      if(this.readings.length === 0) return 0;
+      const total = this.readings.reduce((sum, reading) =>{
+        return sum + reading.diastolic;
+      }, 0);
+
+      return Math.round(total / this.readings.length);
     }
 }
 

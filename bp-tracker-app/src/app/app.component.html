@@ -1,26 +1,58 @@
-<main class="app-container">
-  <h1>Blood Pressure Tracker</h1>
+<main class="page">
+  <div class="card">
 
-  <p class="intro">
-    Enter a reading to check and save it.
-  </p>
-  <div class="form-group">
-    <label for="systolic">Systolic (Top Number)</label>
-    <input id="systolic" type="number" [(ngModel)]="systolic" />
-    <label for="diastolic">Diastolic (Middle Number)</label>
-    <input id="diastolic" type="number" [(ngModel)]="diastolic"/>
-    <label for="pulse">Pulse (Heart Rate)</label>
-    <input id="pulse" type="number" [(ngModel)]="pulse"/>
-    <button (click)="checkBloodPressure()">Check Reading</button>
-    <p *ngIf="status" [ngClass]="getStatusClass()">
-      Status: {{ status }}
+    <h1>Blood Pressure Tracker</h1>
+
+    <p class="intro">
+      Enter a reading to check and save it.
     </p>
 
-    <h2>History</h2>
-    <ul>
-      <li *ngFor="let reading of readings">
-        {{ reading.systolic }}/{{ reading.diastolic }} ({{ reading.pulse }}) - {{ reading.status}}
-      </li>
-    </ul>
+    <div class="form-group">
+      <label for="systolic">Systolic (Top Number)</label>
+      <input id="systolic" type="number" [(ngModel)]="systolic" />
+      <label for="diastolic">Diastolic (Middle Number)</label>
+      <input id="diastolic" type="number" [(ngModel)]="diastolic"/>
+      <label for="pulse">Pulse (Heart Rate)</label>
+      <input id="pulse" type="number" [(ngModel)]="pulse"/>
+      <button (click)="checkBloodPressure()">Check Reading</button>
+      <button class="clear-form-btn" (click)="clearForm()">Clear Reading</button>
+      <p *ngIf="status" [ngClass]="getStatusClass()">
+        Status: {{ status }}
+      </p>
+      <div class="summary-card">
+        <h2>Averages</h2>
+
+        <p>Average Systolic: {{ getAverageSystolic() }}</p>
+        <p>Average Diastolic: {{ getAverageDiastolic() }}</p>
+      </div>
+      <div class="history-list">
+        <div class="history-header">
+          <div>BP</div>
+          <div>Pulse</div>
+          <div>Status</div>
+          <div>Date</div>
+          <div></div>
+        </div>  
+      </div>
+        
+      <div class="history-row" *ngFor="let reading of readings; let i = index">
+
+        <div class="bp">{{ reading.systolic }}/{{ reading.diastolic }}</div>
+            
+        <div class="pulse">{{ reading.pulse }}</div>
+
+        <div class="status" [ngClass]="reading.status.toLowerCase()">{{ reading.status}}</div>
+        <div class="date">
+          {{reading.date | date: 'MMM d, h:mm a'}}
+        </div>
+
+        <button class="delete-btn" (click)="deleteReading(i)">Delete</button>
+        
+      </div>
+       <button class="clear-btn" (click)="clearHistory()">Clear History</button>
+    </div>
+    
+
   </div>
+  
 </main>
