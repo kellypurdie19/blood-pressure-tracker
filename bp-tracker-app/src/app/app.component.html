@@ -19,6 +19,17 @@
       <p *ngIf="status" [ngClass]="getStatusClass()">
         Status: {{ status }}
       </p>
+
+      <div class="filter-buttons">
+        <button (click)="selectedRange = 'all'"> All </button>
+
+        <button (click)="selectedRange = 'week'"> Week </button>
+
+        <button (click)="selectedRange = 'month'"> Month </button>
+
+        <button (click)="selectedRange = 'year'"> Year </button>
+      </div>
+
       <div class="summary-card">
         <h2>Averages</h2>
 
@@ -32,25 +43,24 @@
           <div>Status</div>
           <div>Date</div>
           <div></div>
-        </div>  
-      </div>
-        
-      <div class="history-row" *ngFor="let reading of readings; let i = index">
-
-        <div class="bp">{{ reading.systolic }}/{{ reading.diastolic }}</div>
-            
-        <div class="pulse">{{ reading.pulse }}</div>
-
-        <div class="status" [ngClass]="reading.status.toLowerCase()">{{ reading.status}}</div>
-        <div class="date">
-          {{reading.date | date: 'MMM d, h:mm a'}}
         </div>
 
-        <button class="delete-btn" (click)="deleteReading(i)">Delete</button>
-        
+        <div class="history-row" *ngFor="let reading of getFilteredReadings()">
+          <div class="bp">{{ reading.systolic }}/{{ reading.diastolic }}</div>
+          <div class="pulse">{{ reading.pulse }}</div>
+          <div class="status" [ngClass]="reading.status.toLowerCase()">
+            {{ reading.status }}
+          </div>
+          <div class="date">
+            {{ reading.date | date: 'MMM d /yy, h:mm a' }}
+          </div>
+
+          <button class="delete-btn" (click)="deleteReading(reading)">Delete</button>
+        </div>
+
+        <button class="clear-btn" (click)="clearHistory()">Clear History</button>
       </div>
-       <button class="clear-btn" (click)="clearHistory()">Clear History</button>
-    </div>
+    </div>  
     
 
   </div>

@@ -13,6 +13,8 @@ export class AppComponent {
   diastolic: number = 0;
   pulse: number = 0;
 
+  status: string = '';
+  selectedRange: string = 'all';
   clearForm() {
     this.systolic = 0;
     this.diastolic = 0;
@@ -20,7 +22,6 @@ export class AppComponent {
     this.status = '';
   }
 
-  status: string = '';
   checkBloodPressure() {
     if (this.systolic < 120 && this.diastolic < 80) {
       this.status = 'Normal';
@@ -38,49 +39,92 @@ export class AppComponent {
       status: this.status,
       date: new Date()
     });
-    localStorage.setItem('bpReadings', JSON.stringify(this.readings));
-
+    
+    
+    localStorage.setItem('bpReadings', JSON.stringify(this.readings));    
+    
   }
   getStatusClass() {
-      if (this.status === 'Normal') return 'normal';
-      if (this.status === 'Elevated') return 'elevated';
-      if (this.status === 'High') return 'high';
-      return '';
-    }
-    readings: any[] = [];
-    ngOnInit(){
-      const saved = localStorage.getItem('bpReadings');
+    if (this.status === 'Normal') return 'normal';
+    if (this.status === 'Elevated') return 'elevated';
+    if (this.status === 'High') return 'high';
+    return '';
+  }
+  readings: any[] = [];
+  ngOnInit(){
+    const saved = localStorage.getItem('bpReadings');
 
-      if (saved) {
-        this.readings = JSON.parse(saved).map((r: any) =>({
-          ...r,
-          date: new Date(r.date)
-        }));
+    if (saved) {
+      this.readings = JSON.parse(saved).map((r: any) =>({
+        ...r,
+        date: new Date(r.date)
+      }));
+    }
+
+  }
+
+  clearHistory(){
+    this.readings = [];
+    localStorage.removeItem('bpReadings');
+  }
+  deleteReading(readingToDelete: any){
+    this.readings = this.readings.filter((reading) => {
+      return reading !== readingToDelete;
+    });
+
+    localStorage.setItem('bpReadings', JSON.stringify(this.readings));
+  }
+
+  getAverageSystolic(){
+    const filtered = this.getFilteredReadings();
+
+    if(filtered.length === 0) return 0;
+    const total = filtered.reduce((sum, reading) =>{
+      return sum + reading.systolic;
+    }, 0);
+
+    return Math.round(total / filtered.length);
+  }
+  getAverageDiastolic(){
+    const filtered = this.getFilteredReadings();
+
+    if(filtered.length === 0) return 0;
+    const total = filtered.reduce((sum, reading) =>{
+      return sum + reading.diastolic;
+    }, 0);
+    
+    return Math.round(total / filtered.length);
+  }
+
+  getFilteredReadings() {
+    const now = new Date();
+
+    return this.readings.filter((reading) => {
+      const readingDate = new Date(reading.date);
+
+      if (this.selectedRange === 'week') {
+        const oneWeekAgo = new Date();
+        oneWeekAgo.setDate(now.getDate() - 7);
+
+        return readingDate >= oneWeekAgo;
       }
-    }
-    clearHistory(){
-      this.readings = [];
-      localStorage.removeItem('bpReadings');
-    }
-    deleteReading(index: number){
-      this.readings.splice(index, 1);
-      localStorage.setItem('bpReadings', JSON.stringify(this.readings));
-    }
-    getAverageSystolic(){
-      if(this.readings.length === 0) return 0;
-      const total = this.readings.reduce((sum, reading) =>{
-        return sum + reading.systolic;
-      }, 0);
 
-      return Math.round(total / this.readings.length);
-    }
-    getAverageDiastolic(){
-      if(this.readings.length === 0) return 0;
-      const total = this.readings.reduce((sum, reading) =>{
-        return sum + reading.diastolic;
-      }, 0);
+      if (this.selectedRange === 'month') {
+        const oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(now.getMonth() - 1);
 
-      return Math.round(total / this.readings.length);
-    }
+        return readingDate >= oneMonthAgo;
+      }
+
+      if (this.selectedRange === 'year') {
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(now.getFullYear() - 1);
+
+        return readingDate >= oneYearAgo;
+      }
+
+      return true;
+    });
+  }
 }
 

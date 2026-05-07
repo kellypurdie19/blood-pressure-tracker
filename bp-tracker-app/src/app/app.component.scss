@@ -100,6 +100,11 @@ button:hover {
 .clear-btn:hover {
   background-color: #5a6268;
 }
+.filter-buttons {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+}
 .summary-card {
   margin-top: 24px;
   margin-bottom: 24px;
@@ -118,6 +123,7 @@ button:hover {
 .delete-btn:hover {
   background-color: #a71d2a;
 }
+
 .history-header,
 .history-row {
   display: grid;
